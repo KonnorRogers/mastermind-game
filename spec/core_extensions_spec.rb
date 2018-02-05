@@ -53,7 +53,7 @@ RSpec.describe String do
 
   context "#hollow_bullet" do
     it "returns a hollow_bullet" do
-      puts "\t" + String::hollow_bullet
+      puts "\t" + String::blank_bullet
     end
   end
 
@@ -66,6 +66,22 @@ RSpec.describe String do
   context "#white_bullet" do
     it "returns a white_bullet" do
       puts "\t" + String::white_bullet
+    end
+  end
+
+  context "#circle" do
+    it "returns a solid white circle" do
+      puts "\t" + String::circle
+    end
+
+    it "returns a blue circle" do
+      puts "\t" + String::circle.blue
+    end
+  end
+
+  context "#blank_circle" do
+    it "returns a blank circle" do
+      puts "\t" + String::blank_circle
     end
   end
 end

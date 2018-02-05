@@ -37,11 +37,19 @@ class String
     "\u25e6"
   end
 
-  def self.hollow_bullet
+  def self.blank_bullet
     "\u2022"
   end
 
   def self.black_bullet
     hollow_bullet.black
+  end
+
+  def self.circle
+    "\u25CF"
+  end
+
+  def self.blank_circle
+    "\u25EF"
   end
 end
