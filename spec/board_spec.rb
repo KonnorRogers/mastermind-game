@@ -72,13 +72,31 @@ module Mastermind
       end
     end
 
+    Thing = Struct.new(:value)
+
     context "#set_guess_cell" do
-      it "sets the cells value" do
-        Thing = Struct.new(:value)
+      it "sets the guess cell's value" do
         guesses = [[Thing.new("old_thing"), "", ""], ["", "", ""], ["", "", ""]]
         board = Board.new(guesses: guesses)
         board.set_guess_cell(0, 0, "new_thing")
         expect(board.get_guess_cell(0, 0).value).to eq "new_thing"
+      end
+    end
+
+    context "get_hint_cell" do
+      it "gets the hint cell's value" do
+        hints = [["", "", "not_empty"], ["", "", ""], ["", "", ""]]
+        board = Board.new(hints: hints)
+        expect(board.get_hint_cell(2, 0)).to eq "not_empty"
+      end
+    end
+
+    context "#set_hint_cell" do
+      it "sets the hint cell's value" do
+        hints = [[Thing.new("old_thing"), "", ""], ["", "", ""], ["", "", ""]]
+        board = Board.new(hints: hints)
+        board.set_hint_cell(0, 0, "new_thing_2")
+        expect(board.get_hint_cell(0, 0).value).to eq "new_thing_2"
       end
     end
   end
