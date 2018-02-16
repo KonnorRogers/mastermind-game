@@ -1,10 +1,12 @@
 module Mastermind
   class Computer
     attr_reader :computer, :random_answer, :color_helper
+    attr_accessor :guesser
 
     def initialize
       @computer = 'computer'
       @color_helper = ColorHelper::COLORS_ENUM
+      @guesser = false
     end
 
     def select_random_colors
