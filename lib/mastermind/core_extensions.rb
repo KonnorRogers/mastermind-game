@@ -29,7 +29,7 @@ class String
     colorize("32")
   end
 
-  def yellow
+  def orange
     colorize("33")
   end
 

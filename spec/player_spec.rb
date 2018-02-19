@@ -25,25 +25,22 @@ module Mastermind
         input = { name: "Konnor", guesser: true }
         expect(Player.new(input).guesser).to eq true
       end
-    end
 
-    context "#master_input_prompt" do
-      it "provides the string to ask for master_answer" do
-        player = Player.new({ name: "Konnor", guesser: false })
-
-        expect(player.master_input_prompt).to eq("Input 4 colors to create your master answer\nI.E. blue, blue, red, orange")
+      it "returns false when guesser = false" do
+        input = { name: "Konnor", guesser: false }
+        expect(Player.new(input).guesser).to eq false
       end
     end
 
     context "#get_master_answer" do
-      it "sets the master answer to blue, red, orange, blue" do
+      it "sets the master answer to blue, red, orange, blue w/ proper input" do
 
         player = Player.new({ name: "Konnor", guesser: false })
         input = "blue, blue, red, red"
         expect(player.get_master_answer(input)).to eq([:blue, :blue, :red, :red])
       end
 
-      it "returns Improper input" do
+      it "returns Improper input w/ improper input" do
         player = Player.new({ name: "konnor", guesser: false})
 
         input = "lol, hi, boo"

@@ -1,41 +1,73 @@
 module Mastermind
   class Game
-    attr_reader :master_answer, :player, :computer, :guesser
+    attr_reader :board, :computer, :player, :guesses, :color_helper
+
+    @@MAX_GUESSES = 12
 
     def initialize(board = Board.new)
       @board = board
       @computer = Computer.new
+      @player = Player.new({ name: "Player1", guesser: true })
+
+      @guesses = 0
+      @color_helper = ColorHelper.new
     end
 
-    def get_player_info
-      player_message = "Input your name: "
-      puts "#{player_message}"
-      @player = gets.chomp
-    end
+    def play
+      puts "Would you like to be the guesser? (Y/N)"
+      decide_guesser
 
-    def decide_guesser
-      while true
-        decide_guesser = "Would you like to be the guesser? (Y/N)"
-        puts "#{decide_guesser}"
-        guesser = gets.chomp.downcase
+      puts ""
 
-        if (guesser == "y")
-          @player.guesser = true
-          @computer.guesser = false
-          break
-        elsif (guesser == "n")
-          @player.guesser = false
-          @computer.guesser = true
-          break
-        else
-          puts "Improper input, try again"
+      until game_over?
+        puts @board.formatted_grid
+        puts @board.key
+
+        if @player.guesser
+          puts "Enter a guess in the form, blue, blue, red, orange"
+          input = gets.chomp.downcase
+
+          if (input == @computer.final_answer)
+            @player.winner = true
+          else
+
+            @guesses += 1
+          end
         end
       end
     end
 
-    def play
+    def game_over?
+      return winner? if winner?
+      return @guesses > @@MAX_GUESSES
     end
 
+    private
 
+    def winner?
+      return true if @player.winner?
+      return true if @computer.winner?
+      false
+    end
+
+    def decide_guesser(input = gets.chomp.downcase)
+      while true
+        if (input == "y")
+          @computer.guesser = false
+          @player.guesser = true
+          puts "You are the guesser!"
+          break
+        elsif(input == "n")
+          @computer.guesser = true
+          @player.guesser = false
+          puts "The computer will guess the your secret code."
+          break
+        else
+          puts "Improper input given, enter y to be the guesser, n if not"
+          decide_guesser
+          break
+        end
+      end
+    end
   end
 end

@@ -1,18 +1,22 @@
 module Mastermind
   class Player
-    attr_reader :name
-    attr_accessor :guesser, :master_answer
+    attr_accessor :guesser, :master_answer, :name, :winner
 
     def initialize(input)
       @name = input.fetch(:name)
       @guesser = input.fetch(:guesser)
+      @winner = false
     end
 
-    def master_input_prompt
-      "Input 4 colors to create your master answer\nI.E. blue, blue, red, orange"
+    def guesser?
+      @guesser
     end
 
-    def get_master_answer(input)
+    def winner?
+      @winner
+    end
+
+    def get_master_answer(input = gets.chomp)
       colors_key = ColorHelper::COLORS_ENUM
 
       sanitized_input = input.split(", ").map { |color| color.to_sym }

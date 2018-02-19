@@ -99,5 +99,22 @@ module Mastermind
         expect(board.get_hint_cell(0, 0).value).to eq "new_thing_2"
       end
     end
+
+    context "#formatted_grid" do
+      it "creates a grid 12 high" do
+        board = Board.new
+        expect(board.formatted_grid.size).to eq 12
+      end
+
+      it "creates a blank_circle" do
+        board = Board.new
+        expect(board.formatted_grid[0][2]).to eq String::blank_circle
+      end
+
+      it "creates a blank_bullet" do
+        board = Board.new
+        expect(board.formatted_grid[0][-2]).to eq String::blank_bullet
+      end
+    end
   end
 end
