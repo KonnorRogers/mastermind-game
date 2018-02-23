@@ -5,7 +5,7 @@ module Mastermind
 
     def initialize
       @computer = 'computer'
-      @color_helper = ColorHelper::COLORS_ENUM
+      @color_helper = ColorHelper.new
       @guesser = false
       @winner = false
     end
@@ -16,7 +16,7 @@ module Mastermind
 
       4.times do |random_color|
         random_number = random.rand(0..5)
-        color = @color_helper[random_number]
+        color = ColorHelper::COLORS_ENUM[random_number]
         @master_answer.push(color)
       end
 
@@ -27,11 +27,11 @@ module Mastermind
       @master_answer
     end
 
-    def print_final_answer
-      print "  "
-      @computer.master_answer.each do |color|
+    def print_final_answer(answer)
+      puts ""
+      answer.each do |color|
 
-        @color_helper.change_guess(color)
+        print @color_helper.change_guess(color)
         print " "
       end
 
