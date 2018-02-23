@@ -13,40 +13,80 @@ module Mastermind
       @color_helper = ColorHelper.new
     end
 
+    def check_win(input)
+      colors_array = []
+      input.split(", ").each do |color|
+        color = color.to_sym
+        colors_array.push(color)
+      end
+
+      colors_array == @computer.final_answer
+
+    end
+
+    def valid_input?(input)
+      input = input.split(", ")
+      if (input.size == 4)
+        if (input.all? { |color| ColorHelper::COLORS_ENUM.include?(color.to_sym) })
+          return true
+        end
+      end
+
+      return false
+    end
+
     def play
       puts "Would you like to be the guesser? (Y/N)"
       decide_guesser
 
+      if (player.guesser == true)
+        @computer.select_random_colors
+      else
+        @player.get_master_answer
+      end
+
       puts ""
 
-      until game_over?
+      until winner?
         puts @board.formatted_grid
         puts @board.key
 
-        if @player.guesser
-          puts "Enter a guess in the form, blue, blue, red, orange"
+        if @player.guesser == true
+
+          puts "#{@computer.final_answer}"
+          puts "Enter a guess in the form: blue, blue, red, orange"
           input = gets.chomp.downcase
 
-          if (input == @computer.final_answer)
-            @player.winner = true
-          else
+          until valid_input?(input) == true
+            puts "Incorrect input"
+            puts "Please enter your answer in the form: blue, red, red, blue"
+            input = gets.chomp.downcase
+          end
 
+
+          if (check_win(input) == true)
+            @player.winner = true
+            puts ""
+            puts "Congratulations! You have won!!"
+          else
+            @board.update_guesses(input)
+            update_hints(input)
             @guesses += 1
           end
+        # elsif @computer.guesser
         end
       end
     end
 
     def game_over?
-      return winner? if winner?
-      return @guesses > @@MAX_GUESSES
+      return winner? if winner? == true
     end
 
     private
 
     def winner?
-      return true if @player.winner?
-      return true if @computer.winner?
+      return true if @player.winner? == true
+      return true if @computer.winner? == true
       false
     end
 
@@ -67,6 +107,51 @@ module Mastermind
           decide_guesser
           break
         end
+      end
+    end
+
+    def update_hints(input)
+      colors_array = []
+
+      if player.guesser
+        answer = @computer.final_answer
+
+        input.split(", ").each do |color|
+          color = color.to_sym
+          colors_array << color
+        end
+
+
+        correct_colors_and_positions = 0
+        correct_colors = 0
+        4.times do |index|
+          if (answer[index] == colors_array[index])
+            correct_colors_and_positions += 1
+          end
+        end
+
+        4.times do |index|
+          if (answer.include?(colors_array[index]))
+            correct_colors += 1
+          end
+        end
+
+        correct_colors -= correct_colors_and_positions
+
+        4.times do |index|
+          index -= 3
+
+          if(correct_colors_and_positions > 0)
+            @board.set_hint_cell(index, @guesses, String::black_bullet)
+            correct_colors_and_positions -= 1
+          elsif(correct_colors > 0)
+            @board.set_hint_cell(index, @guesses, String::white_bullet)
+            correct_colors -= 1
+          else
+            @board.set_hint_cell(index, @guesses, String::blank_bullet)
+          end
+        end
+      else
       end
     end
   end

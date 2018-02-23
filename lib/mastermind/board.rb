@@ -1,10 +1,13 @@
 module Mastermind
   class Board
-    attr_reader :guesses, :hints
+    attr_accessor :y
+    attr_reader :guesses, :hints, :color_helper
 
     def initialize(input = {})
       @guesses = input.fetch(:guesses, default_guesses)
       @hints = input.fetch(:hints, default_hints)
+      @color_helper = ColorHelper.new
+      @y = 0
     end
 
     def get_guess_cell(x, y)
@@ -21,6 +24,24 @@ module Mastermind
 
     def set_hint_cell(x, y, value)
       get_hint_cell(x, y).value = value
+    end
+
+    def update_guesses(input)
+      converted_guesses = input.split(", ").map { |color| @color_helper.change_guess(color.to_sym) }
+
+      while @y < 12
+        if get_guess_cell(0, @y) != String::blank_circle
+          x = 0
+          while x < 4
+            set_guess_cell(x, @y, converted_guesses[x])
+            x += 1
+          end
+
+          @y += 1
+          break
+        end
+        @y += 1
+      end
     end
 
     def game_over?

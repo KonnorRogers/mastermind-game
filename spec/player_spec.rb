@@ -47,5 +47,14 @@ module Mastermind
         expect(player.get_master_answer(input)).to eq("Improper input")
       end
     end
+
+    context "#winner" do
+      it "when set to true, returns true" do
+        player = Player.new({ name: "konnor", guesser: true })
+        player.winner = true
+
+        expect(player.winner).to eq true
+      end
+    end
   end
 end

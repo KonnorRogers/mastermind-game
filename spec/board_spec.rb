@@ -64,6 +64,13 @@ module Mastermind
       end
     end
 
+    context "#color_helper" do
+      it "creates a color_helper class" do
+        board = Board.new
+        expect(board.color_helper.is_a?(ColorHelper)).to eq true
+      end
+    end
+
     context "#get_guess_cell" do
       it "returns the cell from the guesses array" do
         guesses = [["", "", ""], ["", "", "something"], ["", "", ""]]
@@ -113,7 +120,7 @@ module Mastermind
 
       it "creates a blank_bullet" do
         board = Board.new
-        expect(board.formatted_grid[0][-2]).to eq String::blank_bullet
+        expect(board.formatted_grid[0][-3]).to eq String::blank_bullet
       end
     end
   end

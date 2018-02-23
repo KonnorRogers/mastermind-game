@@ -8,26 +8,27 @@ module Mastermind
       :cyan,
       :purple,
       :green,
-      :yellow
+      :orange
     ]
 
     def change_guess(text)
+      if COLORS_ENUM.include?(text)
+        case text
+        when :blue
+          String::circle.blue
+        when :red
+          String::circle.red
+        when :cyan
+          String::circle.cyan
+        when :orange
+          String::circle.orange
+        when :purple
+          String::circle.purple
+        when :green
+          String::circle.green
+        end
 
-      case text
-      when :blue
-        String::circle.blue + " "
-      when :red
-        String::circle.red + " "
-      when :cyan
-        String::circle.cyan + " "
-      when :orange
-        String::circle.orange + " "
-      when :purple
-        String::circle.purple + " "
-      when :green
-        String::circle.green + " "
-      else
-        String::circle + " "
+      else return false
       end
     end
   end
